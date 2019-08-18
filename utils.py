@@ -1,4 +1,14 @@
+import functools
 from typing import Any, List, Mapping, Tuple, Union
+
+
+def partial_class(cls, *args, **kwargs):
+    """Partial для класса."""
+
+    class NewCls(cls):
+        __init__ = functools.partialmethod(cls.__init__, *args, **kwargs)
+
+    return NewCls
 
 
 def nearest_value(source_numbers: List[Union[int, float]],
