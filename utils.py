@@ -43,3 +43,21 @@ def nearest_value_from_map(source_mapping: Mapping[Union[int, float], Any],
     """
 
     return source_mapping[min(source_mapping, key=lambda x: abs(x - value))]
+
+
+def get_nested_value(source: Mapping, key: str):
+    """Get nested value from composite dict.
+
+    :param source:
+    :param key: supports composite keys like foo.bar or foo.0.bar
+    :return: value
+    """
+    def _try_convert_to_int(value):
+        try:
+            return int(value)
+        except ValueError:
+            return value
+
+    keys = key.split('.')
+
+    return functools.reduce(lambda x, y: x[_try_convert_to_int(y)], keys, source)
