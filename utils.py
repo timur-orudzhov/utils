@@ -61,3 +61,18 @@ def get_nested_value(source: Mapping, key: str):
     keys = key.split('.')
 
     return functools.reduce(lambda x, y: x[_try_convert_to_int(y)], keys, source)
+
+
+def recursive_getattr(obj, attr, *args):
+    def _getattr(obj, attr):
+        return getattr(obj, attr, *args)
+
+    return functools.reduce(_getattr, [obj] + attr.split('.'))
+
+
+def recursive_setattr(obj, attr, *args):
+    def _setattr(obj, attr):
+        return setattr(obj, attr, *args)
+
+    return functools.reduce(_setattr, [obj] + attr.split('.'))
+
